@@ -123,11 +123,12 @@ A popular restaurant wants to manage reservations, orders, and billing.
 
 | Entity | Attributes (PK, FK) | Notes |
 |--------|--------------------|-------|
-|        |                    |       |
-|        |                    |       |
-|        |                    |       |
-|        |                    |       |
-|        |                    |       |
+|  Customer   |      customer_id (PK), name, phone, email              |  Customer    |
+|    Reservation  |         reservation_id (PK), date, time, reservation_type, no_of_guests        |     Reservation  |
+|    Waiter |   waiter_id (PK), name, phone, section            |    Waiter    |
+|    Order    |         order_id (PK), order_time, special_request           |  Order |
+|     Order Item    |        order_item_id (PK), quantity, unit_price, subtotal            |    Order details   |
+| Bill |bill_id (PK), bill_date, food_amount, service_charge, tax, total_amount|Bill|
 
 ### Relationships and Constraints
 
