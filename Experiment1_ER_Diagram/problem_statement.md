@@ -29,24 +29,27 @@ FlexiFit Gym wants a database to manage its members, trainers, and fitness progr
 
 | Entity | Attributes (PK, FK) | Notes |
 |--------|--------------------|-------|
-|        |                    |       |
-|        |                    |       |
-|        |                    |       |
-|        |                    |       |
-|        |                    |       |
+|   Member     |   member_id (PK), member_name, membership_type, start_date                 |    Stores member details   |
+|   Trainer     |       trainer_id (PK), trainer_name, duty_time             |   Trainer details    |
+|    Program    |program_id (PK), program_name|  Fitness program     |
+| Training Session       |   session_id (PK), member_id (FK), trainer_id (FK), session_date, session_time              | Personal training      |
+| Payment       |      payment_id (PK), member_id (FK), amount              |    Payments   |
 
 ### Relationships and Constraints
 
 | Relationship | Cardinality | Participation | Notes |
 |--------------|------------|---------------|-------|
-|              |            |               |       |
-|              |            |               |       |
-|              |            |               |       |
+|    Member attends Program           |       M:N     |    Partial           |   Members may join multiple programs |
+|     Trainer teaches Program         |       M:N      |       Total        |  Programs may have multiple trainers     |
+|       Member books Session        |       1:M     |      Partial          |    Member books personal sessions  |
+|     Trainer conducts Session         |  1:M          |    Total           |  Trainer handles many sessions     |
+|  Member makes Payment            |    1:M        |     Partial          | Membership and session fees      |
+
 
 ### Assumptions
-- 
-- 
-- 
+-  Each member has a unique ID.
+-  Attendance is recorded for every session
+-  Payments include membership and personal training fees.
 
 ---
 
@@ -71,24 +74,31 @@ The Central Library wants to manage book lending and cultural events.
 
 | Entity | Attributes (PK, FK) | Notes |
 |--------|--------------------|-------|
-|        |                    |       |
-|        |                    |       |
-|        |                    |       |
-|        |                    |       |
-|        |                    |       |
+|  Member      |      member_id (PK), name, phone, email               |  Library member     |
+|    Book    |     book_id (PK), ISBN, title, category, publisher, publication_year               |    Book |
+|   Book Author     |       author_id (PK), book_id (FK), author_name              |      Author |
+|  Loan      |       loan_id (PK), loan_date, due_date, return_date, status             |    Borrow record   |
+|   Fine  |       fine_id (PK), amount, paid_status, paid_dat             | Late fine   |
+|    Event    |        event_id (PK), event_name, event_date, event_time, event_type            | Library event      |
+|  Registration      |    registration_id (PK), registration_date, status                 |   Registration    |
+|  Room      |     room_id (PK), room_name, room_type, capacity               |  Room     |
+
 
 ### Relationships and Constraints
 
 | Relationship | Cardinality | Participation | Notes |
 |--------------|------------|---------------|-------|
-|              |            |               |       |
-|              |            |               |       |
-|              |            |               |       |
+|     Member borrows Book         |       M:N     |       Partial        |  Resolved through Loan     |
+|     Loan has Fine          |      1:0..1      |        Partial       |    Fine only for overdue books   |
+|   Book written by Author           |     M:N         |        Tota       |    Books can have multiple authors|
+|     Member registers Event         |     M:N         |      Partial        |  Many event registrations     |
+|     Event held in Room          |     M:1       |       Total        |     Rooms reused over time  |
+
 
 ### Assumptions
-- 
-- 
-- 
+-  Fine exists only for overdue books
+-  Every event has at least one speaker.
+- Rooms may host multiple events.
 
 ---
 
@@ -123,14 +133,17 @@ A popular restaurant wants to manage reservations, orders, and billing.
 
 | Relationship | Cardinality | Participation | Notes |
 |--------------|------------|---------------|-------|
-|              |            |               |       |
-|              |            |               |       |
-|              |            |               |       |
+|      Customer makes Reservation         |        1:M     |      Partial          | One customer may have many reservations      |
+|       Waiter serves Reservation       |    1:M         |        Total        |  Reservation assigned to one waiter |
+|      Reservation has Order        | 1:M            |      Total          |   Reservation may contain many orders    |
+|       Order contains Order Item       |   1:M          |      Total          | Order consists of multiple items      |
+|      Reservation generates Bill        |   1:1         |          Total      |  One bill per reservation     |
+
 
 ### Assumptions
-- 
-- 
-- 
+- Walk-in customers are stored as reservations
+- One waiter serves each reservation
+- One bill is generated for each reservation.
 
 ---
 
